@@ -4,7 +4,7 @@ namespace Obfuskator
 {
     public class Encryptor
     {
-        public string inputText { private get; set; }
+        private readonly int salt;
 
         private readonly Dictionary<int, char> chars = new() {
             {0, 'A'}, {1, 'B'}, {2, 'C'}, {3, 'D'}, {4, 'E'},
@@ -24,41 +24,39 @@ namespace Obfuskator
 
         private readonly int moduloChar;
 
-        public Encryptor(string text)
+        public Encryptor()
         {
-            inputText = text;
             moduloChar = chars.Count;
-        }
-        private int GenerateSalt()
-        {
-            int salt = 0;
-            foreach (char character in inputText)
-            {
-                int charValue = chars.FirstOrDefault(c => c.Value == character).Key;
-                salt += charValue;
-                salt = (salt * 13) % 256;
-                salt = (salt + 7) % 256;
-            }
-            return salt % moduloChar;
+            salt = new Random().Next(moduloChar);
         }
 
-        public string Encrypt()
+        //private int GenerateSalt()
+        //{
+        //    int salt = 0;
+        //    foreach (char character in inputText)
+        //    {
+        //        int charValue = chars.FirstOrDefault(c => c.Value == character).Key;
+        //        salt += charValue;
+        //        salt = (salt * 13) % 256;
+        //        salt = (salt + 7) % 256;
+        //    }
+        //    return salt % moduloChar;
+        //}
+
+        public string Encrypt(string inputText)
         {
-            int key = GenerateSalt();
             string encryptedText = "";
 
             foreach (char character in inputText)
             {
                 int charValue = chars.FirstOrDefault(c => c.Value == character).Key;
-                encryptedText += chars.FirstOrDefault(c => c.Key == (charValue + key - (key % 2)) % moduloChar).Value.ToString();
+                encryptedText += chars.FirstOrDefault(c => c.Key == (charValue + salt - (salt % 2)) % moduloChar).Value.ToString();
             }
             return encryptedText;
         }
 
-        public string Decrypt()
+        public string Decrypt(string encryptedText)
         {
-            int key = GenerateSalt();
-            string encryptedText = Encrypt();
             string decryptedText = "";
 
             foreach (char character in encryptedText)
@@ -66,7 +64,7 @@ namespace Obfuskator
                 int charValue = chars.FirstOrDefault(c => c.Value == character).Key;
 
                 // dodajemy moduloChar przed modulo, aby uniknąć ujemnych wartości
-                decryptedText += chars.FirstOrDefault(c => c.Key == (charValue - key + (key % 2) + moduloChar) % moduloChar).Value.ToString();
+                decryptedText += chars.FirstOrDefault(c => c.Key == (charValue - salt + (salt % 2) + moduloChar) % moduloChar).Value.ToString();
             }
             return decryptedText;
         }
