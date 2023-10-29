@@ -1,10 +1,11 @@
 ﻿using System.Runtime.InteropServices;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Obfuskator
 {
     public class Encryptor
     {
-        public string InputText {  get; private set; }
+        private readonly int Salt;
 
         private readonly Dictionary<int, char> chars = new() {
             {0, 'A'}, {1, 'B'}, {2, 'C'}, {3, 'D'}, {4, 'E'},
@@ -24,49 +25,34 @@ namespace Obfuskator
 
         private readonly int moduloChar;
 
-        public Encryptor(string inputText)
+        public Encryptor()
         {
             moduloChar = chars.Count;
-            InputText = inputText;
+            Salt = new Random().Next(moduloChar);
         }
 
-        private int GenerateSalt()
-        {
-            int salt = 0;
-            foreach (char character in InputText)
-            {
-                int charValue = chars.FirstOrDefault(c => c.Value == character).Key;
-                salt += charValue;
-                salt = (salt * 13) % 256;
-                salt = (salt + 7) % 256;
-            }
-            return salt % moduloChar;
-        }
-
-        public string Encrypt()
+        public string Encrypt(string InputText)
         {
             string encryptedText = "";
-            int salt = GenerateSalt();
 
             foreach (char character in InputText)
             {
                 int charValue = chars.FirstOrDefault(c => c.Value == character).Key;
-                encryptedText += chars.FirstOrDefault(c => c.Key == (charValue + salt - (salt % 2)) % moduloChar).Value.ToString();
+                encryptedText += chars.FirstOrDefault(c => c.Key == (charValue + Salt - (Salt % 2)) % moduloChar).Value.ToString();
             }
             return encryptedText;
         }
 
-        public string Decrypt()
+        public string Decrypt(string EncryptedText)
         {
             string decryptedText = "";
-            int salt = GenerateSalt();
 
-            foreach (char character in this.Encrypt())
+            foreach (char character in EncryptedText)
             {
                 int charValue = chars.FirstOrDefault(c => c.Value == character).Key;
 
                 // dodajemy moduloChar przed modulo, aby uniknąć ujemnych wartości
-                decryptedText += chars.FirstOrDefault(c => c.Key == (charValue - salt + (salt % 2) + moduloChar) % moduloChar).Value.ToString();
+                decryptedText += chars.FirstOrDefault(c => c.Key == (charValue - Salt + (Salt % 2) + moduloChar) % moduloChar).Value.ToString();
             }
             return decryptedText;
         }
