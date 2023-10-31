@@ -1,27 +1,82 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CSharp;
 using Obfuskator;
+using Project_Logic;
+using Project_Logic.Rewriters;
+using System.Text;
 
 class Program
 {
     static void Main()
     {
-        string text = "To_jest_przykladowy_tekst"; 
+        //string text = "To_jest_przykladowy_tekst"; 
+        //Encryptor encryptor = new Encryptor();
+
+        //string encryptedText = encryptor.Encrypt(text);
+        //Console.WriteLine($"Encrypted text: {encryptedText}");
+
+        //string decryptedText = encryptor.Decrypt(encryptedText);        
+        //Console.WriteLine($"Decrypted text: {decryptedText}");
+
+        // Code analysis ////////////////////////////////////////////
+        var code = @"
+        public class Example 
+        { 
+            public void testMethod()
+            {
+                if(true)
+                {
+                    Console.WriteLine(""Inside if"");
+                }
+
+                for(int i = 0; i < 10; i++)
+                {
+                    for(int g = 0; g < 1; g++)
+                    {
+                        for(int f = 0; f < 1; f++)
+                        {
+                            break;
+                        }
+                    }
+
+                    Console.WriteLine(i);
+                    break;
+                }
+
+                int j = 0;
+                while(j < 10)
+                {
+                    Console.WriteLine(j);
+                    j++;
+                }
+            } 
+        }";
+
+        //Console.WriteLine("Wprowadź kod źródłowy (naciśnij Ctrl+Z, a następnie Enter, aby zakończyć):");
+
+        //var codeBuilder = new StringBuilder();
+        //string line;
+        //while ((line = Console.ReadLine()) != null)
+        //{
+        //    codeBuilder.AppendLine(line);
+        //}
+
+        //var code = codeBuilder.ToString();
+
+        CodeAnalysis codeAnalysis = new(code);
+        codeAnalysis.Analysis();
+
+        // Rewriters  ////////////////////////////////////////////
+        var tree = CSharpSyntaxTree.ParseText(code);
+        var root = (CompilationUnitSyntax)tree.GetRoot();
+
         Encryptor encryptor = new Encryptor();
 
-        string encryptedText = encryptor.Encrypt(text);
-        string encryptedText2 = encryptor.Encrypt("test");
-        Console.WriteLine($"Encrypted text: {encryptedText}");
+        var rewriter = new SyntaxElementRewriter(encryptor);
+        var newRoot = (CompilationUnitSyntax)rewriter.Rewrite(root);
 
-        string decryptedText = encryptor.Decrypt(encryptedText);
-        string decryptedText2 = encryptor.Decrypt(encryptedText2);
-        Console.WriteLine($"Decrypted text: {decryptedText}");
-        Console.WriteLine($"Decrypted text2: {decryptedText2}");
-
-        //string encryptedText2 = encryptor.Encrypt("jakis_inny_tekst");
-        //Console.WriteLine($"Encrypted text2: {encryptedText2}");
-
-        //string decryptedText2 = encryptor.Decrypt(encryptedText2);
-        //Console.WriteLine($"Decrypted text: {decryptedText2}");
+        Console.WriteLine(newRoot.ToFullString());
 
         Console.ReadKey();
     }
