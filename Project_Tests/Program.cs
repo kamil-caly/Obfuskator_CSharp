@@ -23,6 +23,8 @@ class Program
         var code = @"
         public class Example 
         { 
+            private void testMethod33(){}
+
             public void testMethod()
             {
                 if(true)
@@ -73,10 +75,13 @@ class Program
 
         Encryptor encryptor = new Encryptor();
 
-        var rewriter = new SyntaxElementRewriter(encryptor);
-        var newRoot = (CompilationUnitSyntax)rewriter.Rewrite(root);
+        var syntaxRewriter = new SyntaxElementRewriter(encryptor);
+        var newRoot = (CompilationUnitSyntax)syntaxRewriter.Rewrite(root);
 
-        Console.WriteLine(newRoot.ToFullString());
+        var methodNameRewriter = new MethodNameRewriter(encryptor);
+        var newRoot2 = (CompilationUnitSyntax)methodNameRewriter.Rewrite(newRoot);
+
+        Console.WriteLine(newRoot2.ToFullString());
 
         Console.ReadKey();
     }
