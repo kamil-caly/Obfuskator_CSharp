@@ -4,20 +4,19 @@ using Microsoft.CodeAnalysis.CSharp;
 using Obfuskator;
 using Project_Logic;
 using Project_Logic.Rewriters;
-using System.Text;
 
 class Program
 {
     static void Main()
     {
-        //string text = "To_jest_przykladowy_tekst"; 
-        //Encryptor encryptor = new Encryptor();
+        string text = "To_jest_przykladowy_tekst";
+        Encryptor encryptor = new Encryptor();
 
-        //string encryptedText = encryptor.Encrypt(text);
-        //Console.WriteLine($"Encrypted text: {encryptedText}");
+        string encryptedText = encryptor.Encrypt(text);
+        Console.WriteLine($"Encrypted text: {encryptedText}");
 
-        //string decryptedText = encryptor.Decrypt(encryptedText);        
-        //Console.WriteLine($"Decrypted text: {decryptedText}");
+        string decryptedText = encryptor.Decrypt(encryptedText);
+        Console.WriteLine($"Decrypted text: {decryptedText}");
 
         // Code analysis ////////////////////////////////////////////
         var code = @"
@@ -25,7 +24,7 @@ class Program
         { 
             private void testMethod33(){}
 
-            public void testMethod()
+            public void testMethod(int b)
             {
                 if(true)
                 {
@@ -53,7 +52,8 @@ class Program
                     j++;
                 }
             } 
-        }";
+        }
+        public class Example2{}";
 
         //Console.WriteLine("Wprowadź kod źródłowy (naciśnij Ctrl+Z, a następnie Enter, aby zakończyć):");
 
@@ -73,15 +73,24 @@ class Program
         var tree = CSharpSyntaxTree.ParseText(code);
         var root = (CompilationUnitSyntax)tree.GetRoot();
 
-        Encryptor encryptor = new Encryptor();
+        //Encryptor encryptor = new Encryptor();
+
+        var variableNameRewriter = new VariableNameRewriter(encryptor);
+        var newRoot0 = (CompilationUnitSyntax)variableNameRewriter.Rewrite(root);
 
         var syntaxRewriter = new SyntaxElementRewriter(encryptor);
-        var newRoot = (CompilationUnitSyntax)syntaxRewriter.Rewrite(root);
+        var newRoot = (CompilationUnitSyntax)syntaxRewriter.Rewrite(newRoot0);
 
         var methodNameRewriter = new MethodNameRewriter(encryptor);
         var newRoot2 = (CompilationUnitSyntax)methodNameRewriter.Rewrite(newRoot);
 
-        Console.WriteLine(newRoot2.ToFullString());
+        var methodArgumentRewriter = new MethodArgumentRewriter(encryptor);
+        var newRoot3 = (CompilationUnitSyntax)methodArgumentRewriter.Rewrite(newRoot2);
+
+        var classNameRewriter = new ClassNameRewriter(encryptor);
+        var newRoot4 = (CompilationUnitSyntax)classNameRewriter.Rewrite(newRoot3);
+
+        Console.WriteLine(newRoot4.ToFullString());
 
         Console.ReadKey();
     }

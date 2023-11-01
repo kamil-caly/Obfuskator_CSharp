@@ -39,6 +39,7 @@ namespace Obfuskator
             {
                 int charValue = chars.FirstOrDefault(c => c.Value == character).Key;
                 encryptedText += chars.FirstOrDefault(c => c.Key == (charValue + Salt - (Salt % 2)) % moduloChar).Value.ToString();
+                encryptedText += chars.FirstOrDefault(c => c.Key == (charValue + Salt + (Salt % 2 - 4)) % moduloChar).Value.ToString();
             }
             return encryptedText;
         }
@@ -47,13 +48,17 @@ namespace Obfuskator
         {
             string decryptedText = "";
 
-            foreach (char character in EncryptedText)
+            for (int c = 0; c < EncryptedText.Length; c++)
             {
-                int charValue = chars.FirstOrDefault(c => c.Value == character).Key;
+                if (c % 2 != 0)
+                    continue;
+
+                int charValue = chars.FirstOrDefault(ch => ch.Value == EncryptedText[c]).Key;
 
                 // dodajemy moduloChar przed modulo, aby uniknąć ujemnych wartości
                 decryptedText += chars.FirstOrDefault(c => c.Key == (charValue - Salt + (Salt % 2) + moduloChar) % moduloChar).Value.ToString();
             }
+
             return decryptedText;
         }
     }
