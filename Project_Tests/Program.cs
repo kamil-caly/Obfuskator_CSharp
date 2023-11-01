@@ -45,7 +45,9 @@ class Program
                     break;
                 }
 
+                float zmienna = 10.5;
                 int j = 0;
+
                 while(j < 10)
                 {
                     Console.WriteLine(j);
@@ -75,11 +77,8 @@ class Program
 
         //Encryptor encryptor = new Encryptor();
 
-        var variableNameRewriter = new VariableNameRewriter(encryptor);
-        var newRoot0 = (CompilationUnitSyntax)variableNameRewriter.Rewrite(root);
-
         var syntaxRewriter = new SyntaxElementRewriter(encryptor);
-        var newRoot = (CompilationUnitSyntax)syntaxRewriter.Rewrite(newRoot0);
+        var newRoot = (CompilationUnitSyntax)syntaxRewriter.Rewrite(root);
 
         var methodNameRewriter = new MethodNameRewriter(encryptor);
         var newRoot2 = (CompilationUnitSyntax)methodNameRewriter.Rewrite(newRoot);
@@ -87,10 +86,13 @@ class Program
         var methodArgumentRewriter = new MethodArgumentRewriter(encryptor);
         var newRoot3 = (CompilationUnitSyntax)methodArgumentRewriter.Rewrite(newRoot2);
 
-        var classNameRewriter = new ClassNameRewriter(encryptor);
-        var newRoot4 = (CompilationUnitSyntax)classNameRewriter.Rewrite(newRoot3);
+        var typeRewriter = new VariableTypeRewriter(encryptor);
+        var newRoot5 = (CompilationUnitSyntax)typeRewriter.Rewrite(newRoot3);
 
-        Console.WriteLine(newRoot4.ToFullString());
+        var variableNameRewriter = new VariableNameRewriter(encryptor);
+        var newRoot6 = (CompilationUnitSyntax)variableNameRewriter.Rewrite(newRoot5);
+
+        Console.WriteLine(newRoot6.ToFullString());
 
         Console.ReadKey();
     }

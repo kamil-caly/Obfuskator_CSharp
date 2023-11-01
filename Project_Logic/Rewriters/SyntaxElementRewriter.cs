@@ -3,6 +3,9 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using Obfuskator;
 using System.Xml.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System;
 
 namespace Project_Logic.Rewriters
 {
@@ -16,7 +19,8 @@ namespace Project_Logic.Rewriters
             { SyntaxKind.ElseKeyword, "else" },
             { SyntaxKind.BreakKeyword, "break" },
             { SyntaxKind.ContinueKeyword, "continue" },
-            { SyntaxKind.SwitchKeyword, "switch" }
+            { SyntaxKind.SwitchKeyword, "switch" },
+            { SyntaxKind.ClassKeyword, "class" },
         };
 
         private readonly Encryptor _encryptor;
@@ -45,6 +49,8 @@ namespace Project_Logic.Rewriters
             ReplaceSyntaxNode((ContinueStatementSyntax)base.VisitContinueStatement(node)!, SyntaxKindToKeyword[SyntaxKind.ContinueKeyword]);
         public override SyntaxNode VisitSwitchStatement(SwitchStatementSyntax node) =>
             ReplaceSyntaxNode((SwitchStatementSyntax)base.VisitSwitchStatement(node)!, SyntaxKindToKeyword[SyntaxKind.SwitchKeyword]);
+        public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node) =>
+            ReplaceSyntaxNode((ClassDeclarationSyntax)base.VisitClassDeclaration(node)!, SyntaxKindToKeyword[SyntaxKind.ClassKeyword]);
 
         private SyntaxNode ReplaceSyntaxNode(SyntaxNode node, string keyword)
         {
@@ -60,6 +66,7 @@ namespace Project_Logic.Rewriters
                 SyntaxKind.BreakKeyword => ((BreakStatementSyntax)node).WithBreakKeyword(newKeywordToken).WithTriviaFrom(node),
                 SyntaxKind.ContinueKeyword => ((ContinueStatementSyntax)node).WithContinueKeyword(newKeywordToken).WithTriviaFrom(node),
                 SyntaxKind.SwitchKeyword => ((SwitchStatementSyntax)node).WithSwitchKeyword(newKeywordToken).WithTriviaFrom(node),
+                SyntaxKind.ClassKeyword => ((ClassDeclarationSyntax)node).WithKeyword(newKeywordToken).WithTriviaFrom(node),
                 _ => node
             };
         }
