@@ -24,9 +24,13 @@ namespace Project_Logic.Rewriters
             string originalType = node.Type.ToString();
             string encryptedTypeName = _encryptor.Encrypt(originalType);
 
-            var modifiedNode = node.WithType(SyntaxFactory.ParseTypeName(encryptedTypeName));
+            var newIdentifierToken = SyntaxFactory.Identifier(encryptedTypeName);
 
-            return base.VisitVariableDeclaration(modifiedNode)!;
+            //var modifiedNode = node.WithType(SyntaxFactory.ParseTypeName(encryptedTypeName));
+
+            return node.WithType(SyntaxFactory.ParseTypeName(encryptedTypeName)).WithTriviaFrom(node);
+
+            //return base.VisitVariableDeclaration(modifiedNode)!;
         }
     }
 }

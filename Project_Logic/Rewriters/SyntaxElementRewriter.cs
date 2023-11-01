@@ -20,7 +20,7 @@ namespace Project_Logic.Rewriters
             { SyntaxKind.BreakKeyword, "break" },
             { SyntaxKind.ContinueKeyword, "continue" },
             { SyntaxKind.SwitchKeyword, "switch" },
-            { SyntaxKind.ClassKeyword, "class" },
+            { SyntaxKind.ClassKeyword, "class" }
         };
 
         private readonly Encryptor _encryptor;

@@ -25,9 +25,8 @@ namespace Project_Logic.Rewriters
             string encryptedVariableName = _encryptor.Encrypt(originalVariableName);
 
             var newIdentifierToken = SyntaxFactory.Identifier(encryptedVariableName);
-            var modifiedNode = node.WithIdentifier(newIdentifierToken);
 
-            return base.VisitVariableDeclarator(modifiedNode)!;
+            return node.WithIdentifier(newIdentifierToken).WithTriviaFrom(node);
         }
     }
 }

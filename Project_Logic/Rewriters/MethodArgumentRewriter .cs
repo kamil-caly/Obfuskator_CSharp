@@ -21,17 +21,17 @@ namespace Project_Logic.Rewriters
 
         public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
         {
-            var modifiedMethod = (MethodDeclarationSyntax)base.VisitMethodDeclaration(node)!;
+            //var modifiedMethod = (MethodDeclarationSyntax)base.VisitMethodDeclaration(node)!;
 
             var modifiedParameters = new SeparatedSyntaxList<ParameterSyntax>();
-            foreach (var parameter in modifiedMethod.ParameterList.Parameters)
+            foreach (var parameter in node.ParameterList.Parameters)
             {
                 var encryptedParameterName = _encryptor.Encrypt(parameter.Identifier.Text);
                 var newParameter = parameter.WithIdentifier(SyntaxFactory.Identifier(encryptedParameterName));
                 modifiedParameters = modifiedParameters.Add(newParameter);
             }
 
-            return modifiedMethod.WithParameterList(modifiedMethod.ParameterList.WithParameters(modifiedParameters));
+            return node.WithParameterList(node.ParameterList.WithParameters(modifiedParameters));
         }
     }
 }

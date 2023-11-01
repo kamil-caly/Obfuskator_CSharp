@@ -15,7 +15,7 @@ class Program
         string encryptedText = encryptor.Encrypt(text);
         Console.WriteLine($"Encrypted text: {encryptedText}");
 
-        string decryptedText = encryptor.Decrypt(encryptedText);
+        string decryptedText = encryptor.DecryptText(encryptedText);
         Console.WriteLine($"Decrypted text: {decryptedText}");
 
         // Code analysis ////////////////////////////////////////////
@@ -93,6 +93,10 @@ class Program
         var newRoot6 = (CompilationUnitSyntax)variableNameRewriter.Rewrite(newRoot5);
 
         Console.WriteLine(newRoot6.ToFullString());
+
+        Console.WriteLine("--------------------------------------------------------------");
+
+        Console.WriteLine(encryptor.DecryptText(newRoot6.ToFullString()));
 
         Console.ReadKey();
     }
