@@ -62,7 +62,6 @@ namespace Obfuskator
                 if (EncryptedText.Contains(word))
                 {
                     EncryptedText = EncryptedText.Replace(word, DecryptSingle(word));
-                    EncryptedWords.RemoveAll(w => w == word);
                 }
             }
 
