@@ -71,32 +71,17 @@ class Program
         CodeAnalysis codeAnalysis = new(code);
         codeAnalysis.Analysis();
 
-        // Rewriters  ////////////////////////////////////////////
-        var tree = CSharpSyntaxTree.ParseText(code);
-        var root = (CompilationUnitSyntax)tree.GetRoot();
+        // Obfucator  ////////////////////////////////////////////
 
-        //Encryptor encryptor = new Encryptor();
+        CodeObfuscator codeObfuscator = new CodeObfuscator();
+        var obfucateCode = codeObfuscator.Obfuscate(code);
+        var deobfuscateCode = codeObfuscator.Deobfuscate(obfucateCode);
 
-        var syntaxRewriter = new SyntaxElementRewriter(encryptor);
-        var newRoot = (CompilationUnitSyntax)syntaxRewriter.Rewrite(root);
-
-        var methodNameRewriter = new MethodNameRewriter(encryptor);
-        var newRoot2 = (CompilationUnitSyntax)methodNameRewriter.Rewrite(newRoot);
-
-        var methodArgumentRewriter = new MethodArgumentRewriter(encryptor);
-        var newRoot3 = (CompilationUnitSyntax)methodArgumentRewriter.Rewrite(newRoot2);
-
-        var typeRewriter = new VariableTypeRewriter(encryptor);
-        var newRoot5 = (CompilationUnitSyntax)typeRewriter.Rewrite(newRoot3);
-
-        var variableNameRewriter = new VariableNameRewriter(encryptor);
-        var newRoot6 = (CompilationUnitSyntax)variableNameRewriter.Rewrite(newRoot5);
-
-        Console.WriteLine(newRoot6.ToFullString());
+        Console.WriteLine(obfucateCode);
 
         Console.WriteLine("--------------------------------------------------------------");
 
-        Console.WriteLine(encryptor.DecryptText(newRoot6.ToFullString()));
+        Console.WriteLine(deobfuscateCode);
 
         Console.ReadKey();
     }
