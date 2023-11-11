@@ -1,0 +1,31 @@
+class Program
+{
+    static void Main()
+    {
+        Console.WriteLine("Witaj w przykladowym programie w C#!");
+
+        Kalkulator kalkulator = new Kalkulator();
+
+        int wynikDodawania = kalkulator.Dodaj(5, 3);
+        Console.WriteLine("Wynik dodawania: " + wynikDodawania);
+
+        Console.WriteLine("Liczby parzyste od 1 do 10:");
+        for (int i = 1; i <= 10; i++)
+        {
+            if (i % 2 == 0)
+            {
+                Console.Write(i + " ");
+            }
+        }
+
+        Console.ReadLine();
+    }
+}
+
+class Kalkulator
+{
+    public int Dodaj(int a, int b)
+    {
+        return a + b;
+    }
+}

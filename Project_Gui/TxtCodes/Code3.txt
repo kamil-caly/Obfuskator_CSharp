@@ -1,0 +1,66 @@
+class Figura
+{
+    public virtual void Opis()
+    {
+        Console.WriteLine("Jestem figura.");
+    }
+}
+
+class Kolo : Figura
+{
+    private double promien;
+
+    public Kolo(double promien)
+    {
+        this.promien = promien;
+    }
+
+    public override void Opis()
+    {
+        Console.WriteLine($"Jestem kolem o promieniu {promien}.");
+    }
+
+    public double ObliczPole()
+    {
+        return Math.PI * Math.Pow(promien, 2);
+    }
+}
+
+class Prostokat : Figura
+{
+    private double dlugosc;
+    private double szerokosc;
+
+    public Prostokat(double dlugosc, double szerokosc)
+    {
+        this.dlugosc = dlugosc;
+        this.szerokosc = szerokosc;
+    }
+
+    public override void Opis()
+    {
+        Console.WriteLine($"Jestem prostokatem o wymiarach {dlugosc} x {szerokosc}.");
+    }
+
+    public double ObliczPole()
+    {
+        return dlugosc * szerokosc;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Kolo kolo = new Kolo(5);
+        Prostokat prostokat = new Prostokat(4, 6);
+
+        kolo.Opis();
+        prostokat.Opis();
+
+        Console.WriteLine("Pole kola: " + kolo.ObliczPole());
+        Console.WriteLine("Pole prostokata: " + prostokat.ObliczPole());
+
+        Console.ReadLine();
+    }
+}
