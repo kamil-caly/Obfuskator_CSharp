@@ -20,6 +20,7 @@ namespace Project_Logic
             var root = (CompilationUnitSyntax)tree.GetRoot();
 
             root = (CompilationUnitSyntax)new CommentRemover().RemoveComments(root);
+            root = (CompilationUnitSyntax)new ClassNameRewriter(_encryptor).Rewrite(root);
             root = (CompilationUnitSyntax)new SyntaxElementRewriter(_encryptor).Rewrite(root);
             root = (CompilationUnitSyntax)new MethodNameRewriter(_encryptor).Rewrite(root);
             root = (CompilationUnitSyntax)new MethodArgumentRewriter(_encryptor).Rewrite(root);

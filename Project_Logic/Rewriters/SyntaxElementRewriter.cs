@@ -19,8 +19,7 @@ namespace Project_Logic.Rewriters
             { SyntaxKind.ElseKeyword, "else" },
             { SyntaxKind.BreakKeyword, "break" },
             { SyntaxKind.ContinueKeyword, "continue" },
-            { SyntaxKind.SwitchKeyword, "switch" },
-            { SyntaxKind.ClassKeyword, "class" }
+            { SyntaxKind.SwitchKeyword, "switch" }
         };
 
         private readonly Encryptor _encryptor;
@@ -49,8 +48,6 @@ namespace Project_Logic.Rewriters
             ReplaceSyntaxNode((ContinueStatementSyntax)base.VisitContinueStatement(node)!, SyntaxKindToKeyword[SyntaxKind.ContinueKeyword]);
         public override SyntaxNode VisitSwitchStatement(SwitchStatementSyntax node) =>
             ReplaceSyntaxNode((SwitchStatementSyntax)base.VisitSwitchStatement(node)!, SyntaxKindToKeyword[SyntaxKind.SwitchKeyword]);
-        public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node) =>
-            ReplaceSyntaxNode((ClassDeclarationSyntax)base.VisitClassDeclaration(node)!, SyntaxKindToKeyword[SyntaxKind.ClassKeyword]);
 
         private SyntaxNode ReplaceSyntaxNode(SyntaxNode node, string keyword)
         {
