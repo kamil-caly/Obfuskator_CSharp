@@ -2,6 +2,7 @@ public class Example
         { 
             private void testMethod33(){}
 
+            // test comment
             public void testMethod(int b)
             {
                 if(true)
@@ -28,6 +29,11 @@ public class Example
 
                 while(j < 10)
                 {
+                    /* 
+                    secret 
+                    multiline 
+                    comment
+                    */
                     Console.WriteLine(j);
                     j++;
                 }
