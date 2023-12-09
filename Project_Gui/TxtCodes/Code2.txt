@@ -1,24 +1,17 @@
 class Program
 {
-    static void Main()
+    public static int Main()
     {
-        Console.WriteLine("Witaj w przykladowym programie w C#!");
-
         Kalkulator kalkulator = new Kalkulator();
 
         int wynikDodawania = kalkulator.Dodaj(5, 3);
-        Console.WriteLine("Wynik dodawania: " + wynikDodawania);
 
-        Console.WriteLine("Liczby parzyste od 1 do 10:");
-        for (int i = 1; i <= 10; i++)
-        {
-            if (i % 2 == 0)
-            {
-                Console.Write(i + " ");
-            }
-        }
+        int wynikOdejmowania = kalkulator.Odejmij(10, 4);
 
-        Console.ReadLine();
+        int wynikMnozenia = kalkulator.Pomnoz(3, 7);
+
+        // Zwracamy sumê wszystkich wyników
+        return wynikDodawania + wynikOdejmowania + wynikMnozenia;
     }
 }
 
@@ -27,5 +20,15 @@ class Kalkulator
     public int Dodaj(int a, int b)
     {
         return a + b;
+    }
+
+    public int Odejmij(int a, int b)
+    {
+        return a - b;
+    }
+
+    public int Pomnoz(int a, int b)
+    {
+        return a * b;
     }
 }

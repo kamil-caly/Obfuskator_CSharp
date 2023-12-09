@@ -1,8 +1,10 @@
+using System;
+
 class Figura
 {
-    public virtual void Opis()
+    public virtual string Opis()
     {
-        Console.WriteLine("Jestem figura.");
+        return "Jestem figura.";
     }
 }
 
@@ -15,9 +17,9 @@ class Kolo : Figura
         this.promien = promien;
     }
 
-    public override void Opis()
+    public override string Opis()
     {
-        Console.WriteLine($"Jestem kolem o promieniu {promien}.");
+        return $"Jestem kolem o promieniu {promien}.";
     }
 
     public double ObliczPole()
@@ -37,9 +39,9 @@ class Prostokat : Figura
         this.szerokosc = szerokosc;
     }
 
-    public override void Opis()
+    public override string Opis()
     {
-        Console.WriteLine($"Jestem prostokatem o wymiarach {dlugosc} x {szerokosc}.");
+        return $"Jestem prostokatem o wymiarach {dlugosc} x {szerokosc}.";
     }
 
     public double ObliczPole()
@@ -50,17 +52,22 @@ class Prostokat : Figura
 
 class Program
 {
-    static void Main()
+    public static int Main()
     {
         Kolo kolo = new Kolo(5);
         Prostokat prostokat = new Prostokat(4, 6);
 
-        kolo.Opis();
-        prostokat.Opis();
+        string opisKola = kolo.Opis();
+        string opisProstokata = prostokat.Opis();
 
-        Console.WriteLine("Pole kola: " + kolo.ObliczPole());
-        Console.WriteLine("Pole prostokata: " + prostokat.ObliczPole());
+        // Usuniêto Console.WriteLine dla opisów figur
 
-        Console.ReadLine();
+        double poleKola = kolo.ObliczPole();
+        double poleProstokata = prostokat.ObliczPole();
+
+        // Usuniêto Console.WriteLine dla pól figur
+
+        // Zwracamy sumê pól obu figur jako int
+        return (int)(poleKola + poleProstokata);
     }
 }

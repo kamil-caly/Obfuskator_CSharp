@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace Obfuskator
+namespace Project_Logic.Obfuscators
 {
     public class Encryptor
     {
@@ -25,13 +25,10 @@ namespace Obfuskator
 
         private readonly int moduloChar;
 
-        private List<string> EncryptedWords;
-
         public Encryptor()
         {
             moduloChar = chars.Count;
             Salt = new Random().Next(moduloChar);
-            EncryptedWords = new List<string>();
         }
 
         public string Encrypt(string InputText)
@@ -41,50 +38,12 @@ namespace Obfuskator
             foreach (char character in InputText)
             {
                 int charValue = chars.FirstOrDefault(c => c.Value == character).Key;
-                encryptedText += chars.FirstOrDefault(c => c.Key == (charValue + Salt - (Salt % 2)) % moduloChar).Value.ToString();
+                encryptedText += chars.FirstOrDefault(c => c.Key == (charValue + Salt - Salt % 2) % moduloChar).Value.ToString();
                 encryptedText += chars.FirstOrDefault(c => c.Key == (charValue + Salt + (Salt % 2 - 4)) % moduloChar).Value.ToString();
-                encryptedText += chars.FirstOrDefault(c => c.Key == (charValue + Salt + (Salt % 2 + 10)) % moduloChar).Value.ToString();
+                encryptedText += chars.FirstOrDefault(c => c.Key == (charValue + Salt + Salt % 2 + 10) % moduloChar).Value.ToString();
             }
-
-            if (!EncryptedWords.Contains(encryptedText))
-                EncryptedWords.Add(encryptedText);
 
             return encryptedText;
         }
-
-        public string DecryptText(string EncryptedText)
-        {
-            // sortujemy od najdłuższego słowa bo inaczej odszyfrowywanie się psuje
-            List<string> EncryptedWordsCopy = new List<string>(EncryptedWords.OrderByDescending(w => w.Length));
-
-            foreach (var word in EncryptedWordsCopy)
-            {
-                if (EncryptedText.Contains(word))
-                {
-                    EncryptedText = EncryptedText.Replace(word, DecryptSingle(word));
-                }
-            }
-
-            return EncryptedText;
-        }
-
-        private string DecryptSingle(string EncryptedWord)
-        {
-            string decryptedText = "";
-
-            for (int c = 0; c < EncryptedWord.Length; c++)
-            {
-                if (c % 3 != 0)
-                    continue;
-
-                int charValue = chars.FirstOrDefault(ch => ch.Value == EncryptedWord[c]).Key;
-
-                // dodajemy moduloChar przed modulo, aby uniknąć ujemnych wartości
-                decryptedText += chars.FirstOrDefault(c => c.Key == (charValue - Salt + (Salt % 2) + moduloChar) % moduloChar).Value.ToString();
-            }
-
-            return decryptedText;
-        }
     }
-
 }

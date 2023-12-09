@@ -1,7 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.CSharp;
-using Obfuskator;
 using Project_Logic;
 using Project_Logic.Rewriters;
 using Microsoft.CodeAnalysis;
@@ -9,6 +8,7 @@ using System.Reflection;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.CSharp;
 using System.CodeDom.Compiler;
+using Project_Logic.Obfuscators;
 
 class Program
 {
@@ -22,35 +22,38 @@ class Program
     static void CodeEvalTests()
     {
         string code = @"
-                using System.Diagnostics;
+class Program
+{
+    public static string Main()
+    {
+        int[] tablica = { 5, 2, 8, 1, 4 };
 
-                namespace RoslynCompileSample
+        SortowanieBabelkowe(tablica);
+
+        // Zwracamy posortowaną tablicę
+        return string.Join("" "", tablica);
+    }
+
+    static void SortowanieBabelkowe(int[] tablica)
+    {
+        int n = tablica.Length;
+
+        for (int i = 0; i < n - 1; i++)
+        {
+            for (int j = 0; j < n - 1 - i; j++)
+            {
+                if (tablica[j] > tablica[j + 1])
                 {
-                    class Program
-                    {
-                        public static string Main(string message) 
-                        {
-                            int a = 2;
-                            Debug.WriteLine(""sfks"");
-                            string final = test();
-                            var testClass = new TestClass();
-                            return message + final + testClass.test2();
-                        }
+                    int temp = tablica[j];
+                    tablica[j] = tablica[j + 1];
+                    tablica[j + 1] = temp;
+                }
+            }
+        }
+    }
+}
 
-                        public static string test() 
-                        {
-                            return ""abc"";
-                        }
-                    }
-
-                    class TestClass
-                    {
-                        public string test2() 
-                        {
-                            return ""TestClass"";
-                        }
-                    }
-                }";
+                    ";
 
         SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(code);
 
@@ -80,7 +83,21 @@ class Program
 
                 foreach (Diagnostic diagnostic in failures)
                 {
-                    Console.Error.WriteLine("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
+                    // Informację, wyjątki, błędy podczas kompilacji danego kodu
+                    Console.Error.WriteLine("---------------------- Compilation Error ----------------------");
+                    Console.Error.WriteLine($"Error ID: {diagnostic.Id}");
+                    Console.Error.WriteLine($"Message: {diagnostic.GetMessage()}");
+                    Console.Error.WriteLine($"Severity: {diagnostic.Severity}");
+
+                    // Miejsce w kodzie, gdzie błąd wystąpił
+                    var location = diagnostic.Location;
+                    if (location != null)
+                    {
+                        Console.Error.WriteLine($"Start Line: {location.GetLineSpan().StartLinePosition.Line}");
+                        Console.Error.WriteLine($"Start Column: {location.GetLineSpan().StartLinePosition.Character}");
+                    }
+
+                    Console.WriteLine();
                 }
             }
             else
@@ -88,7 +105,7 @@ class Program
                 ms.Seek(0, SeekOrigin.Begin);
                 Assembly assembly = Assembly.Load(ms.ToArray());
 
-                Type type = assembly.GetType("RoslynCompileSample.Program")!;
+                Type type = assembly.GetType("Program")!;
                 object obj = Activator.CreateInstance(type)!;
 
                 //var test = type.InvokeMember("Main",
@@ -102,20 +119,34 @@ class Program
 
                 foreach (MethodInfo method in methods)
                 {
-                    if (code.Contains(method.Name))
+                    if (code.Contains(method.Name) && method.Name == "Main")
                     {
                         try
                         {
-                            var result2 = method.Invoke(obj, new object[] { "Hello World" });
+                            var result2 = method.Invoke(obj, null);
+                            Console.WriteLine("Code result: " + result2);
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
-                            // nic nie robimy, bo możemy
+                            Console.Error.WriteLine("---------------------- Runtime Error ----------------------");
+                            // Wyjątki podczas wykonywania danego kodu
+                            if (ex is TargetInvocationException targetEx && targetEx.InnerException != null)
+                            {
+                                Console.Error.WriteLine($"InnerException: {targetEx.InnerException.GetType().FullName}");
+                                Console.Error.WriteLine($"InnerException Message: {targetEx.InnerException.Message}");
+                                Console.Error.WriteLine($"InnerException StackTrace: {targetEx.InnerException.StackTrace}");
+                            }
+                            else 
+                            {
+                                Console.Error.WriteLine($"Wystąpił wyjątek: {ex.GetType().FullName}");
+                                Console.Error.WriteLine($"Opis: {ex.Message}");
+                                Console.Error.WriteLine($"StackTrace: {ex.StackTrace}");
+                            }
+
+                            Console.WriteLine();
                         }
                     }
                 }
-
-                string aaa = "sss";
             }
         }
     }

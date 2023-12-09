@@ -1,11 +1,11 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
-using Obfuskator;
 using System.Xml.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System;
+using Project_Logic.Obfuscators;
 
 namespace Project_Logic.Rewriters
 {

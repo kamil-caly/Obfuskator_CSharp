@@ -1,27 +1,15 @@
+using System;
+
 class Program
 {
-    static void Main()
+    public static string Main()
     {
         int[] tablica = { 5, 2, 8, 1, 4 };
 
-        Console.WriteLine("Tablica przed sortowaniem:");
-        WyswietlTablice(tablica);
-
         SortowanieBabelkowe(tablica);
 
-        Console.WriteLine("Tablica po sortowaniu:");
-        WyswietlTablice(tablica);
-
-        Console.ReadLine();
-    }
-
-    static void WyswietlTablice(int[] tablica)
-    {
-        foreach (var element in tablica)
-        {
-            Console.Write(element + " ");
-        }
-        Console.WriteLine();
+        // Zwracamy posortowan¹ tablicê jako string
+        return string.Join(" ", tablica);
     }
 
     static void SortowanieBabelkowe(int[] tablica)

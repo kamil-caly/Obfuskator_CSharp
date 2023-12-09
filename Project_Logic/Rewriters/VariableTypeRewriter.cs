@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Obfuskator;
+using Project_Logic.Obfuscators;
 
 namespace Project_Logic.Rewriters
 {

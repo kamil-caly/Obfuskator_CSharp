@@ -11,6 +11,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="4" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -53,12 +55,12 @@
                     Click="Obfuscate_Click"
                     Cursor="Hand"/>
 
-            <Button Content="DEOBFUSCATE"
+            <Button Content="RUN ALL"
                     Grid.Column="2"
                     Background="#fa5241"
                     Foreground="White"
                     Margin="5"
-                    Click="Deobfuscate_Click"
+                    Click="RunAll_Click"
                     Cursor="Hand"/>
 
             <Button Content="READ FROM FILE"
@@ -107,11 +109,11 @@
                 Click="ClearAll_Click"/>
         </Grid>
 
-        <TextBox x:Name="LeftTextBox"
+        <TextBox x:Name="LeftTextBoxCode"
             Grid.Row="1" 
             Grid.Column="0" 
             Grid.ColumnSpan="1" 
-            Margin="10 0 10 10"
+            Margin="10 0 10 5"
             TextWrapping="NoWrap"
             AcceptsReturn="True"
             VerticalScrollBarVisibility="Visible"
@@ -122,11 +124,11 @@
             FontSize="15"
             />
 
-        <TextBox x:Name="RightTextBox"
+        <TextBox x:Name="RightTextBoxCode"
             Grid.Row="1" 
             Grid.Column="1" 
             Grid.ColumnSpan="1" 
-            Margin="10 0 10 10"
+            Margin="10 0 10 5"
             Background="#ffffdd"
             TextWrapping="NoWrap"
             AcceptsReturn="True"
@@ -136,6 +138,49 @@
             FontWeight="DemiBold"
             FontFamily="Consolas"
             FontSize="15"
+            />
+
+        <GridSplitter 
+            Grid.Row="2"
+            Grid.ColumnSpan="2"
+            Height="4" 
+            HorizontalAlignment="Stretch"
+            Background="#fa5241"
+            BorderBrush="Black"
+            BorderThickness="1"
+            Margin="10 0 10 0"
+            />
+
+        <TextBox x:Name="LeftTextBoxResult"
+            Grid.Row="3" 
+            Grid.Column="0" 
+            Grid.ColumnSpan="1" 
+            Margin="10 5 10 10"
+            AcceptsReturn="True"
+            TextWrapping="Wrap"
+            VerticalScrollBarVisibility="Visible"
+            HorizontalScrollBarVisibility="Visible"
+            AcceptsTab="True"
+            IsReadOnly="True"
+            FontWeight="DemiBold"
+            FontFamily="Consolas"
+            FontSize="18"
+            />  
+
+        <TextBox x:Name="RightTextBoxResult"
+            Grid.Row="3" 
+            Grid.Column="1" 
+            Grid.ColumnSpan="1" 
+            Margin="10 5 10 10"
+            AcceptsReturn="True"
+            TextWrapping="Wrap"
+            VerticalScrollBarVisibility="Visible"
+            HorizontalScrollBarVisibility="Visible"
+            AcceptsTab="True"
+            IsReadOnly="True"
+            FontWeight="DemiBold"
+            FontFamily="Consolas"
+            FontSize="18"
             />
 
     </Grid>
