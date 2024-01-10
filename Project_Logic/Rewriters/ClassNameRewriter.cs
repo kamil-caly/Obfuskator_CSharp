@@ -27,11 +27,15 @@ namespace Project_Logic.Rewriters
         public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
         {
             string originalClassName = node.Identifier.Text;
-            string encryptedClassName = _encryptor.Encrypt(originalClassName);
 
-            var newIdentifierToken = SyntaxFactory.Identifier(encryptedClassName);
+            if (originalClassName != "Program")
+            {
+                string encryptedClassName = _encryptor.Encrypt(originalClassName);
+                var newIdentifierToken = SyntaxFactory.Identifier(encryptedClassName);
+                return node.WithIdentifier(newIdentifierToken).WithTriviaFrom(node);
+            }
 
-            return node.WithIdentifier(newIdentifierToken).WithTriviaFrom(node);
+            return base.VisitClassDeclaration(node)!;
         }
     }
 }

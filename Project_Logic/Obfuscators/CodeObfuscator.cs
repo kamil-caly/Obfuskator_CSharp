@@ -20,7 +20,6 @@ namespace Project_Logic.Obfuscators
 
             root = (CompilationUnitSyntax)new CommentRemover().RemoveComments(root);
 
-            // TODO: Nie zamieniać nazwy klasy gdy 'Program'
             root = (CompilationUnitSyntax)new ClassNameRewriter(_encryptor).Rewrite(root);
 
             // TODO: Raczej wywalić wszystko żeby się dało skompilować
