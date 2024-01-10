@@ -21,7 +21,12 @@ namespace Project_Logic.Rewriters
 
         public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
         {
-            return ReplaceMethodName((MethodDeclarationSyntax)base.VisitMethodDeclaration(node)!);
+            if (node.Identifier.Text != "Main")
+            {
+                return ReplaceMethodName((MethodDeclarationSyntax)base.VisitMethodDeclaration(node)!);
+            }
+
+            return base.VisitMethodDeclaration(node)!;
         }
 
         private SyntaxNode ReplaceMethodName(MethodDeclarationSyntax methodNode)
