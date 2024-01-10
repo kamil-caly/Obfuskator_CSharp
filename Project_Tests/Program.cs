@@ -159,8 +159,8 @@ class Program
         string encryptedText = encryptor.Encrypt(text);
         Console.WriteLine($"Encrypted text: {encryptedText}");
 
-        string decryptedText = encryptor.DecryptText(encryptedText);
-        Console.WriteLine($"Decrypted text: {decryptedText}");
+        //string decryptedText = encryptor.DecryptText(encryptedText);
+        //Console.WriteLine($"Decrypted text: {decryptedText}");
 
         // Code analysis ////////////////////////////////////////////
         var code = @"
@@ -219,13 +219,13 @@ class Program
 
         CodeObfuscator codeObfuscator = new CodeObfuscator();
         var obfucateCode = codeObfuscator.Obfuscate(code);
-        var deobfuscateCode = codeObfuscator.Deobfuscate(obfucateCode);
+        //var deobfuscateCode = codeObfuscator.Deobfuscate(obfucateCode);
 
         Console.WriteLine(obfucateCode);
 
         Console.WriteLine("--------------------------------------------------------------");
 
-        Console.WriteLine(deobfuscateCode);
+        //Console.WriteLine(deobfuscateCode);
 
         Console.ReadKey();
     }
