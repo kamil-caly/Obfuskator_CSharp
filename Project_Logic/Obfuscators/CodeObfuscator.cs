@@ -22,9 +22,6 @@ namespace Project_Logic.Obfuscators
 
             root = (CompilationUnitSyntax)new ClassNameRewriter(_encryptor).Rewrite(root);
 
-            // TODO: Raczej wywalić wszystko żeby się dało skompilować
-            root = (CompilationUnitSyntax)new SyntaxElementRewriter(_encryptor).Rewrite(root);
-
             // TODO: Nie zamieniać nazwy metody gdy 'Main'
             root = (CompilationUnitSyntax)new MethodNameRewriter(_encryptor).Rewrite(root);
 
