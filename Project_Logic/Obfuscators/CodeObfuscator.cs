@@ -24,7 +24,6 @@ namespace Project_Logic.Obfuscators
 
             root = (CompilationUnitSyntax)new MethodNameRewriter(_encryptor).Rewrite(root);
 
-            // TODO: Do poprawy żeby nie było liczb na początku nazwy arumentu
             root = (CompilationUnitSyntax)new MethodArgumentRewriter(_encryptor).Rewrite(root);
 
             // TODO: Też do poprawy, bo nie wszystkie nazwy są zamieniane
