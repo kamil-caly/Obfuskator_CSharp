@@ -25,12 +25,16 @@ namespace Project_Logic.Obfuscators
 
             root = (CompilationUnitSyntax)new ClassNameRewriter(_encryptor).Rewrite(root);
 
+            root = (CompilationUnitSyntax)new MethodNameRewriter(_encryptor).Rewrite(root);
+
             string obfuscatedCode = root.ToFullString();
 
             foreach (var item in EcryptedObjects)
             {
                 obfuscatedCode = obfuscatedCode.Replace(item.Key, item.Value);   
             }
+
+            EcryptedObjects.Clear();
 
             return obfuscatedCode;
         }

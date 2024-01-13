@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="TxtCodes\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Project_Logic\Project_Logic.csproj" />
   </ItemGroup>
 

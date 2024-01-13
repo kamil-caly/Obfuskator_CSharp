@@ -1,0 +1,80 @@
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    public static int Main()
+    {
+        TodoManager todoManager = new TodoManager();
+
+        todoManager.AddTask("Zadanie 1", "Opis zadania 1");
+        todoManager.AddTask("Zadanie 2", "Opis zadania 2");
+        todoManager.AddTask("Zadanie 3", "Opis zadania 3");
+
+        todoManager.DisplayTasks();
+
+        todoManager.CompleteTask("Zadanie 1");
+        todoManager.CompleteTask("Zadanie 3");
+
+        todoManager.DisplayTasks();
+
+
+	return todoManager.tasks.Count;
+    }
+}
+
+class TodoManager
+{
+    public List<Task> tasks;
+
+    public TodoManager()
+    {
+        tasks = new List<Task>();
+    }
+
+    public void AddTask(string title, string description)
+    {
+        tasks.Add(new Task(title, description));
+    }
+
+    public void CompleteTask(string title)
+    {
+        Task test = tasks.Find(t => t.Title == title);
+        if (test  != null)
+        {
+            test .Complete();
+            
+        }
+        else
+        {
+            
+        }
+    }
+
+    public void DisplayTasks()
+    {
+        foreach (var task in tasks)
+        {
+           
+        }
+    }
+}
+
+class Task
+{
+    public string Title { get; }
+    public string Description { get; }
+    public bool IsCompleted { get; private set; }
+
+    public Task(string title, string description)
+    {
+        Title = title;
+        Description = description;
+        IsCompleted = false;
+    }
+
+    public void Complete()
+    {
+        IsCompleted = true;
+    }
+}

@@ -33,6 +33,7 @@ namespace Project_Logic.Rewriters
         {
             string originalMethodName = methodNode.Identifier.Text;
             string encryptedMethodName = _encryptor.Encrypt(originalMethodName);
+            CodeObfuscator.EcryptedObjects.TryAdd(originalMethodName, encryptedMethodName);
 
             var newIdentifierToken = SyntaxFactory.Identifier(encryptedMethodName);
             return methodNode.WithIdentifier(newIdentifierToken).WithTriviaFrom(methodNode);
