@@ -55,24 +55,6 @@ namespace Project_Logic.Rewriters
             return node.WithIdentifier(newIdentifier).WithTriviaFrom(node);
         }
 
-        public override SyntaxNode VisitObjectCreationExpression(ObjectCreationExpressionSyntax node)
-        {
-            if (node.Type is IdentifierNameSyntax identifierName)
-            {
-                // Obsługa tworzenia obiektu klasy
-                var originalClassName = identifierName.Identifier.Text;
-                if (originalClassName != "Program")
-                {
-                    string encryptedClassName = _encryptor.Encrypt(originalClassName);
-                    var newIdentifierToken = SyntaxFactory.Identifier(encryptedClassName);
-                    var newIdentifierName = identifierName.WithIdentifier(newIdentifierToken);
-                    return node.WithType(newIdentifierName).WithTriviaFrom(node);
-                }
-            }
-
-            return base.VisitObjectCreationExpression(node)!;
-        }
-
         public override SyntaxNode VisitMemberAccessExpression(MemberAccessExpressionSyntax node)
         {
             // Obsługa wyrażeń z dostępem do składowych, np. example.testMethod(5)

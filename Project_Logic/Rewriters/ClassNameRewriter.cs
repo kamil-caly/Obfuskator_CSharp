@@ -31,6 +31,7 @@ namespace Project_Logic.Rewriters
             if (originalClassName != "Program")
             {
                 string encryptedClassName = _encryptor.Encrypt(originalClassName);
+                CodeObfuscator.EcryptedObjects.TryAdd(originalClassName, encryptedClassName);
                 var newIdentifierToken = SyntaxFactory.Identifier(encryptedClassName);
                 return node.WithIdentifier(newIdentifierToken).WithTriviaFrom(node);
             }
@@ -38,27 +39,13 @@ namespace Project_Logic.Rewriters
             return base.VisitClassDeclaration(node)!;
         }
 
-        //public override SyntaxNode VisitObjectCreationExpression(ObjectCreationExpressionSyntax node)
-        //{
-        //    var originalTypeName = node.Type.ToString();
-
-        //    if (originalTypeName != "Program")
-        //    {
-        //        string encryptedTypeName = _encryptor.Encrypt(originalTypeName);
-        //        var newIdentifierName = SyntaxFactory.IdentifierName(encryptedTypeName);
-        //        return node.WithType(newIdentifierName).WithTriviaFrom(node);
-        //    }
-
-        //    return base.VisitObjectCreationExpression(node)!;
-        //}
-
         public override SyntaxNode VisitVariableDeclaration(VariableDeclarationSyntax node)
         {
             var originalTypeName = node.Type.ToString();
 
             if (originalTypeName != "Program" && node.Type is not PredefinedTypeSyntax)
             {
-                string encryptedTypeName = _encryptor.Encrypt(originalTypeName);
+                string encryptedTypeName = _encryptor.Encrypt(originalTypeName) + " ";
                 var newIdentifierName = SyntaxFactory.IdentifierName(encryptedTypeName);
                 return node.WithType(newIdentifierName).WithTriviaFrom(node);
             }
