@@ -24,7 +24,7 @@ class Kolo : Figura
 
     public double ObliczPole()
     {
-        return Math.PI * Math.Pow(promien, 2);
+        return 3.14 * promien * promien;
     }
 }
 

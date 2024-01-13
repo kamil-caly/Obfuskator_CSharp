@@ -7,6 +7,7 @@ namespace Project_Logic.Obfuscators
     public class CodeObfuscator
     {
         private readonly Encryptor _encryptor;
+        public static Dictionary<string, string> EcryptedObjects = new Dictionary<string, string>();
 
         public CodeObfuscator()
         {
@@ -20,16 +21,16 @@ namespace Project_Logic.Obfuscators
 
             root = (CompilationUnitSyntax)new CommentRemover().RemoveComments(root);
 
-            root = (CompilationUnitSyntax)new ClassNameRewriter(_encryptor).Rewrite(root);
+            root = (CompilationUnitSyntax)new VariableRewriter(_encryptor).Rewrite(root);
 
-            root = (CompilationUnitSyntax)new MethodNameRewriter(_encryptor).Rewrite(root);
+            string obfuscatedCode = root.ToFullString();
 
-            root = (CompilationUnitSyntax)new MethodArgumentRewriter(_encryptor).Rewrite(root);
+            foreach (var item in EcryptedObjects)
+            {
+                obfuscatedCode = obfuscatedCode.Replace(item.Key, item.Value);   
+            }
 
-            // TODO: Też do poprawy, bo nie wszystkie nazwy są zamieniane
-            root = (CompilationUnitSyntax)new VariableNameRewriter(_encryptor).Rewrite(root);
-
-            return root.ToFullString();
+            return obfuscatedCode;
         }
     }
 }
