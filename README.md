@@ -39,11 +39,11 @@ The project is developed using Visual Studio 2022 and utilizes the Roslyn librar
 2. Obfuscate the code.
 3. Compile and run both original and obfuscated code.
 4. View results, with successful execution highlighted in green and errors in red.
-5. 
-![image](https://github.com/kamil-caly/Obfuskator_CSharp/assets/66841315/93147121-1c45-4ced-9e79-1ef2baeaff0c)
-*Demonstrating the obfuscation process in the Code Obfuscator application without errors.*
 
 ![image](https://github.com/kamil-caly/Obfuskator_CSharp/assets/66841315/04df9972-eb3a-4309-bd34-734a5a445a64)
+*Demonstrating the obfuscation process in the Code Obfuscator application without errors.*
+
+![image](https://github.com/kamil-caly/Obfuskator_CSharp/assets/66841315/93147121-1c45-4ced-9e79-1ef2baeaff0c)
 *Demonstrating the obfuscation process in the Code Obfuscator application with some errors.*
 
 ## Dependencies
